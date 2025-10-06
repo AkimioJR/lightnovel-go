@@ -51,7 +51,7 @@ type GetArticleByCategoryRequest struct {
 	Page          uint `json:"page"`
 }
 
-type CategoryInfo struct {
+type ArticleInfo struct {
 	ArticleId uint     `json:"aid"`
 	Banner    string   `json:"banner"` // URL
 	Cover     string   `json:"cover"`  // URL
@@ -88,8 +88,8 @@ type PageInfo struct {
 }
 
 type GetArticleByCategoryResponse struct {
-	List     []CategoryInfo `json:"list"`
-	PageInfo PageInfo       `json:"page_info"`
+	List     []ArticleInfo `json:"list"`
+	PageInfo PageInfo      `json:"page_info"`
 }
 
 // https://api.lightnovel.fun/api/category/get-article-by-cate
