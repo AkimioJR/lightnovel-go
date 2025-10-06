@@ -134,6 +134,9 @@ func (c *Client) doRequest(method string, path string, data any, result any) err
 	if err != nil {
 		return fmt.Errorf("decode response failed: %w", err)
 	}
+	if r.Code != 0 {
+		return fmt.Errorf("lightnovel api error: code %d", r.Code)
+	}
 
 	respData, err := json.Marshal(r.Data)
 	if err != nil {
