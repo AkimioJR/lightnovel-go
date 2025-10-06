@@ -52,10 +52,10 @@ type UserProfileBase struct {
 	UserUID
 	NickName   string        `json:"nickname"`
 	Avatar     string        `json:"avatar"` // Avatar image URL
-	Passer     uint          `json:"passer"`
-	Gender     uint          `json:"gender"`
+	Passer     UintBool      `json:"passer"`
+	Gender     UintBool      `json:"gender"`
 	Sign       string        `json:"sign"`
-	Status     uint          `json:"status"`
+	Status     UintBool      `json:"status"`
 	Banner     string        `json:"banner"`       // Banner image URL
 	BanEndDate DateTime      `json:"ban_end_date"` // Date when ban ends
 	Medals     []Medals      `json:"medals"`
