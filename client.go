@@ -68,6 +68,15 @@ func (c *Client) SetUserAgent(ua string) {
 	c.ua = ua
 }
 
+// SetAPIEndpoint sets the API endpoint URL.
+//
+// Default is "https://api.lightnovel.fun" application API.
+//
+// "https://www.lightnovel.fun/proxy" is web API.
+func (c *Client) SetAPIEndpoint(api string) {
+	c.api = api
+}
+
 func (c *Client) doRequest(method string, path string, data any, result any) error {
 	var reqBody io.Reader
 	if method == http.MethodGet || data == nil {
