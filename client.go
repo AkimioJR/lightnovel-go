@@ -49,6 +49,8 @@ type Client struct {
 	api        string
 	httpClient *http.Client
 	ua         string
+
+	credentials *UserCredentials
 }
 
 func NewClient() *Client {
