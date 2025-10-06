@@ -15,7 +15,7 @@ type Request struct {
 	Platform    string   `json:"platform"`
 	Data        any      `json:"d"`
 	VersionName string   `json:"ver_name"`
-	VersionCode int      `json:"ver_code"`
+	VersionCode uint     `json:"ver_code"`
 	Sign        string   `json:"sign"`
 }
 
@@ -40,9 +40,9 @@ func (r *Request) Json() (*bytes.Reader, error) {
 }
 
 type Response struct {
-	Code      int   `json:"code"`
-	Data      any   `json:"data"`
-	TimeStamp int64 `json:"t"`
+	Code      uint   `json:"code"`
+	Data      any    `json:"data"`
+	TimeStamp uint64 `json:"t"`
 }
 
 type Client struct {
