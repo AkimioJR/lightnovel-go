@@ -36,12 +36,17 @@ func (dt *DateTime) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	t, err := time.Parse(time.DateTime, s)
-	if err != nil {
-		return err
+	if s == "0000-00-00 00:00:00" {
+		*dt = DateTime(time.Time{})
+		return nil
+	} else {
+		t, err := time.Parse(time.DateTime, s)
+		if err != nil {
+			return err
+		}
+		*dt = DateTime(t)
+		return nil
 	}
-	*dt = DateTime(t)
-	return nil
 }
 
 func (dt DateTime) MarshalJSON() ([]byte, error) {
