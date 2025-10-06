@@ -30,8 +30,8 @@ type CategoryInfo struct {
 	IsTop  uint   `json:"is_top"`
 
 	// 仅多章节小说包含
-	SeriesId   *uint   `json:"sid"`
-	SeriesName *string `json:"series_name"`
+	SeriesId   uint    `json:"sid"` // 非多章节小说默认是 0
+	SeriesName *string `json:"series_name,omitempty"`
 }
 
 type PageInfo struct {
