@@ -60,11 +60,13 @@ type UserProfileBase struct {
 	BanEndDate DateTime      `json:"ban_end_date"` // Date when ban ends
 	Medals     []Medals      `json:"medals"`
 	Following  uint          `json:"following"` // Number of users this user is following
-	Comments   uint          `json:"comments"`
 	Favorites  uint          `json:"favorites"`
 	Articles   uint          `json:"articles"`
 	Level      UserLevelInfo `json:"level"`
-	Balance    UserBalance   `json:"balance"`
+
+	// 仅能看到自己的信息
+	Comments *uint        `json:"comments"`
+	Balance  *UserBalance `json:"balance"`
 }
 
 // UserProfile represents complete user profile information
