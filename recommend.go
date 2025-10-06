@@ -3,7 +3,7 @@ package lightnovel
 import "net/http"
 
 type RecommendItem struct {
-	Gid        uint        `json:"gid"`
+	GroupId    uint        `json:"gid"`
 	Type       uint        `json:"type"`
 	Title      string      `json:"title"`
 	Rows       uint        `json:"rows"`
@@ -21,9 +21,9 @@ type BookItems struct {
 	ActionType      uint   `json:"action_type"`
 	ActionParams    uint   `json:"action_params"`
 	PictureUrl      string `json:"pic_url"`
-	Gid             uint   `json:"gid"`
+	GroupId         uint   `json:"gid"`
 	GroupName       string `json:"group_name"`
-	ParentGid       uint   `json:"parent_gid"`
+	ParentGroupId   uint   `json:"parent_gid"`
 	ParentGroupName string `json:"parent_group_name"`
 	Comments        uint   `json:"comments"`
 	Hits            uint   `json:"hits"`
