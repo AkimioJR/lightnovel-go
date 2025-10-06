@@ -8,7 +8,7 @@ type GetCategoriesRequest struct {
 }
 
 type CategoryInfo struct {
-	GroupId    int64    `json:"gid"`
+	GroupId    uint     `json:"gid"`
 	Name       string   `json:"name"`
 	PictureUrl string   `json:"pic"`
 	LastTime   DateTime `json:"last_time"`
