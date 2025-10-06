@@ -1,0 +1,74 @@
+package lightnovel
+
+import "net/http"
+
+type ArticleDetail struct {
+	ArticleId     uint             `json:"aid"`
+	UserId        uint             `json:"uid"`
+	Title         string           `json:"title"`
+	Summary       string           `json:"summary"`
+	Content       *string          `json:"content"`
+	Hits          uint             `json:"hits"`
+	Likes         uint             `json:"likes"`
+	Coins         uint             `json:"coins"`
+	Favorites     uint             `json:"favorites"`
+	Comments      uint             `json:"comments"`
+	Shares        uint             `json:"shares"`
+	Time          DateTime         `json:"time"`
+	HasPoll       UintBool         `json:"has_poll"`
+	Banner        string           `json:"banner"`
+	OnlyPasser    UintBool         `json:"only_passer"`
+	Cover         string           `json:"cover"` // URL
+	LastTime      DateTime         `json:"last_time"`
+	Lt            DateTime         `json:"lt"`
+	GroupId       uint             `json:"gid"`
+	ParentGroupId uint             `json:"parent_gid"`
+	SeriesId      uint             `json:"sid"`
+	Author        UserProfileBase  `json:"author"`
+	OtherRecoms   []any            `json:"other_recoms"` // unknown structure
+	Res           PictureResources `json:"res"`          // 图片资源
+	CacheVer      uint             `json:"cache_ver"`
+	OnlyApp       UintBool         `json:"only_app"`
+	AlreadyCoin   uint             `json:"already_coin"` // 投币数量 0 -> 未投币
+	AlreadyLike   UintBool         `json:"already_like"`
+	AlreadyFav    UintBool         `json:"already_fav"`
+	AlreadyFollow UintBool         `json:"already_follow"`
+}
+
+type PictureResources struct {
+	Ids           []string               `json:"ids"`
+	ResourcesInfo map[string]PictureInfo `json:"res_info"`
+}
+
+type PictureInfo struct {
+	Resid    uint   `json:"resid"`
+	Width    uint   `json:"width"`
+	Height   uint   `json:"height"`
+	Ext      string `json:"ext"`
+	Filename string `json:"filename"`
+	Url      string `json:"url"`
+}
+
+type TetArticleDetailRequest struct {
+	UserSecurityKey
+	ArticleId uint `json:"aid"`
+	NoContent bool `json:"simple"`
+}
+
+// https://api.lightnovel.fun/api/article/get-detail
+func (c *Client) GetArticleDetail(articleId uint, noContent bool) (*ArticleDetail, error) {
+	if c.credentials == nil {
+		return nil, ErrNotSignedIn
+	}
+	req := TetArticleDetailRequest{
+		UserSecurityKey: c.credentials.UserSecurityKey,
+		ArticleId:       articleId,
+		NoContent:       noContent,
+	}
+	var data ArticleDetail
+	err := c.doRequest(http.MethodPost, "/api/article/get-detail", req, &data)
+	if err != nil {
+		return nil, err
+	}
+	return &data, nil
+}
