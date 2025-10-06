@@ -21,7 +21,7 @@ type Request struct {
 
 func newRequest(data any) *Request {
 	return &Request{
-		GZ:          1,
+		GZ:          0,
 		Client:      "app",
 		Platform:    "ios",
 		Data:        data,
@@ -96,22 +96,29 @@ func (c *Client) doRequest(method string, path string, data any, result any) err
 		return fmt.Errorf("request failed with status: %s", resp.Status)
 	}
 
-	var respBody io.Reader
+	var decodeBody io.Reader
 	switch resp.Header.Get("Content-Encoding") {
 	case "gzip":
+		// fmt.Println("gzip encoded response")
 		gr, err := gzip.NewReader(resp.Body)
 		if err != nil {
 			return fmt.Errorf("gzip reader error: %w", err)
 		}
 		defer gr.Close()
-		respBody = gr
+		decodeBody = gr
 
 	default:
-		respBody = resp.Body
+		decodeBody = resp.Body
+	}
+	b, err := io.ReadAll(decodeBody)
+	if err != nil {
+		return fmt.Errorf("read response body failed: %w", err)
 	}
 
+	// fmt.Println(string(b))
 	var r Response
-	if err := json.NewDecoder(respBody).Decode(&r); err != nil {
+	err = json.Unmarshal(b, &r)
+	if err != nil {
 		return fmt.Errorf("decode response failed: %w", err)
 	}
 
