@@ -106,11 +106,7 @@ func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
 	if data.UserUID.UID == 0 || data.UserSecurityKey.SecurityKey == "" {
 		return nil, ErrLoginFailed
 	}
-
-	c.credentials = &UserCredentials{
-		UserUID:         data.UserUID,
-		UserSecurityKey: data.UserSecurityKey,
-	}
+	c.SetUserCredentials(data.UserUID.UID, data.UserSecurityKey.SecurityKey)
 	return &data, nil
 }
 
@@ -118,10 +114,6 @@ var ErrNotSignedIn = fmt.Errorf("user not signed in")
 
 // https://api.lightnovel.fun/api/user/info
 func (c *Client) GetUserInfo() (*UserProfileDetail, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
-
 	var data UserProfileDetail
 	err := c.doRequest(http.MethodPost, "/api/user/info", c.credentials, &data)
 	if err != nil {

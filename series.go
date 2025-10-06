@@ -49,9 +49,6 @@ type UserReadInfo struct {
 
 // https://api.lightnovel.fun/api/series/get-info
 func (c *Client) GetSeriesInfo(seriesId uint) (*SeriesInfo, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetSeriesInfoRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		SeriesId:        seriesId,

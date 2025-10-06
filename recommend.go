@@ -37,9 +37,6 @@ type RecommendRequest struct {
 // https://api.lightnovel.us/api/recom/get-recommends
 func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 	var req RecommendRequest
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req.UserSecurityKey = c.credentials.UserSecurityKey
 	req.ClassID = classID
 
@@ -71,9 +68,6 @@ type ArticleRankInfo struct {
 
 // https://api.lightnovel.fun/api/recom/get-ranks
 func (c *Client) GetRecommendRank(parentGropuId uint, groupId uint) ([]ArticleRankInfo, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetRecommendRankRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGroupId:   parentGropuId,

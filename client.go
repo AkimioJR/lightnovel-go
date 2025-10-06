@@ -52,7 +52,7 @@ type Client struct {
 	httpClient *http.Client
 	ua         string
 
-	credentials *UserCredentials
+	credentials UserCredentials
 }
 
 func NewClient() *Client {
@@ -134,7 +134,12 @@ func (c *Client) doRequest(method string, path string, data any, result any) err
 	if err != nil {
 		return fmt.Errorf("decode response failed: %w", err)
 	}
-	if r.Code != 0 {
+	switch r.Code {
+	case 0:
+		// Success
+	case 5:
+		return ErrNotSignedIn
+	default:
 		return fmt.Errorf("lightnovel api error: code %d", r.Code)
 	}
 
@@ -151,8 +156,6 @@ func (c *Client) doRequest(method string, path string, data any, result any) err
 }
 
 func (c *Client) SetUserCredentials(uid uint, securityKey string) {
-	c.credentials = &UserCredentials{
-		UserUID:         UserUID{UID: uid},
-		UserSecurityKey: UserSecurityKey{SecurityKey: securityKey},
-	}
+	c.credentials.UserUID.UID = uid
+	c.credentials.UserSecurityKey.SecurityKey = securityKey
 }

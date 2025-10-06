@@ -110,9 +110,6 @@ type SearchResponse[T any] struct {
 
 // https://api.lightnovel.fun/api/search/search-result
 func search[T any](c *Client, query string, page uint, t ContentType) (*T, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := SearchRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		Query:           query,

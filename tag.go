@@ -15,9 +15,6 @@ type ArticleTag struct {
 
 // https://api.lightnovel.fun/api/tag/get-article-tags
 func (c *Client) GetArticleTags(articleId uint) ([]ArticleTag, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetArticleTagsRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ArticleId:       articleId,

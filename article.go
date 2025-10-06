@@ -57,9 +57,6 @@ type TetArticleDetailRequest struct {
 
 // https://api.lightnovel.fun/api/article/get-detail
 func (c *Client) GetArticleDetail(articleId uint, noContent bool) (*ArticleDetail, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := TetArticleDetailRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ArticleId:       articleId,

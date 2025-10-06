@@ -16,9 +16,6 @@ type CategoryInfo struct {
 
 // https://api.lightnovel.fun/api/category/get-categories
 func (c *Client) GetCategories(parentGroupId uint) ([]CategoryInfo, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetCategoriesRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGroupId:   parentGroupId,
@@ -56,9 +53,6 @@ type GroupCategoryInfo struct {
 
 // https://api.lightnovel.fun/api/category/get-article-cates
 func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCategoryInfo, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetArticleCategoriesRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		Cache:           cache,
@@ -123,9 +117,6 @@ type GetArticleByCategoryResponse struct {
 
 // https://api.lightnovel.fun/api/category/get-article-by-cate
 func (c *Client) GetArticleByCategory(parentGropuId uint, groupId uint, pageSize uint, page uint) (*GetArticleByCategoryResponse, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetArticleByCategoryRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGropuId:   parentGropuId,

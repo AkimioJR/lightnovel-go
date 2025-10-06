@@ -41,9 +41,6 @@ type GetDiscussTopicResponse struct {
 
 // https://api.lightnovel.fun/api/discuss/get-topic
 func (c *Client) GetDiscussTopic(articleId uint, pageSize uint, page uint) (*GetDiscussTopicResponse, error) {
-	if c.credentials == nil {
-		return nil, ErrNotSignedIn
-	}
 	req := GetDiscussTopicRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ArticleId:       articleId,
