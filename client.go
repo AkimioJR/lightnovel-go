@@ -10,8 +10,8 @@ import (
 )
 
 type Request struct {
-	GZ          UintBool     `json:"gz"`
-	Isencrypted UintBool     `json:"is_encrypted"`
+	GZ          Bool         `json:"gz"`
+	Isencrypted Bool         `json:"is_encrypted"`
 	Client      ClientType   `json:"client"`
 	Platform    PlatformType `json:"platform"`
 	Data        any          `json:"d"`

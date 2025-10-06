@@ -105,15 +105,15 @@ type ArticleInfo struct {
 }
 
 type PageInfo struct {
-	Count        uint     `json:"count"`
-	Size         uint     `json:"size"`
-	Current      uint     `json:"current"`
-	Previous     uint     `json:"prev"`
-	Next         uint     `json:"next"`
-	HasPrevious  UintBool `json:"has_prev"`
-	HasNext      UintBool `json:"has_next"`
-	Model        uint     `json:"model"`
-	SupportModel []uint   `json:"support_model"`
+	Count        uint   `json:"count"`
+	Size         uint   `json:"size"`
+	Current      uint   `json:"current"`
+	Previous     uint   `json:"prev"`
+	Next         uint   `json:"next"`
+	HasPrevious  Bool   `json:"has_prev"`
+	HasNext      Bool   `json:"has_next"`
+	Model        uint   `json:"model"`
+	SupportModel []uint `json:"support_model"`
 }
 
 type GetArticleByCategoryResponse struct {

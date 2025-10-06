@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-type UintBool bool
+type Bool bool
 
-func (b *UintBool) UnmarshalJSON(data []byte) error {
+func (b *Bool) UnmarshalJSON(data []byte) error {
 	switch string(data) {
 	case "0":
 		*b = false
@@ -20,7 +20,7 @@ func (b *UintBool) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b UintBool) MarshalJSON() ([]byte, error) {
+func (b Bool) MarshalJSON() ([]byte, error) {
 	if b {
 		return []byte("1"), nil
 	} else {

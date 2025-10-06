@@ -15,9 +15,9 @@ type ArticleDetail struct {
 	Comments      uint             `json:"comments"`
 	Shares        uint             `json:"shares"`
 	Time          DateTime         `json:"time"`
-	HasPoll       UintBool         `json:"has_poll"`
+	HasPoll       Bool             `json:"has_poll"`
 	Banner        string           `json:"banner"`
-	OnlyPasser    UintBool         `json:"only_passer"`
+	OnlyPasser    Bool             `json:"only_passer"`
 	Cover         string           `json:"cover"` // URL
 	LastTime      DateTime         `json:"last_time"`
 	Lt            DateTime         `json:"lt"`
@@ -28,11 +28,11 @@ type ArticleDetail struct {
 	OtherRecoms   []any            `json:"other_recoms"` // unknown structure
 	Res           PictureResources `json:"res"`          // 图片资源
 	CacheVer      uint             `json:"cache_ver"`
-	OnlyApp       UintBool         `json:"only_app"`
+	OnlyApp       Bool             `json:"only_app"`
 	AlreadyCoin   uint             `json:"already_coin"` // 投币数量 0 -> 未投币
-	AlreadyLike   UintBool         `json:"already_like"`
-	AlreadyFav    UintBool         `json:"already_fav"`
-	AlreadyFollow UintBool         `json:"already_follow"`
+	AlreadyLike   Bool             `json:"already_like"`
+	AlreadyFav    Bool             `json:"already_fav"`
+	AlreadyFollow Bool             `json:"already_follow"`
 }
 
 type PictureResources struct {
