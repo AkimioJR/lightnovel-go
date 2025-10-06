@@ -28,7 +28,7 @@ func (b UintBool) MarshalJSON() ([]byte, error) {
 	}
 }
 
-type DateTime time.Time
+type DateTime time.Time // "2006-01-02 15:04:05" time.DateTime format
 
 func (dt *DateTime) UnmarshalJSON(data []byte) error {
 	var s string
