@@ -11,6 +11,7 @@ import (
 
 type Request struct {
 	GZ          UintBool `json:"gz"`
+	Isencrypted UintBool `json:"is_encrypted"`
 	Client      string   `json:"client"`
 	Platform    string   `json:"platform"`
 	Data        any      `json:"d"`
@@ -22,6 +23,7 @@ type Request struct {
 func newRequest(data any) *Request {
 	return &Request{
 		GZ:          false,
+		Isencrypted: false,
 		Client:      "app",
 		Platform:    "ios",
 		Data:        data,
