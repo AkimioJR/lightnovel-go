@@ -10,22 +10,22 @@ import (
 )
 
 type Request struct {
-	GZ          UintBool `json:"gz"`
-	Isencrypted UintBool `json:"is_encrypted"`
-	Client      string   `json:"client"`
-	Platform    string   `json:"platform"`
-	Data        any      `json:"d"`
-	VersionName string   `json:"ver_name"`
-	VersionCode uint     `json:"ver_code"`
-	Sign        string   `json:"sign"`
+	GZ          UintBool     `json:"gz"`
+	Isencrypted UintBool     `json:"is_encrypted"`
+	Client      ClientType   `json:"client"`
+	Platform    PlatformType `json:"platform"`
+	Data        any          `json:"d"`
+	VersionName string       `json:"ver_name"`
+	VersionCode uint         `json:"ver_code"`
+	Sign        string       `json:"sign"`
 }
 
 func newRequest(data any) *Request {
 	return &Request{
 		GZ:          false,
 		Isencrypted: false,
-		Client:      "app",
-		Platform:    "ios",
+		Client:      ClientApp,
+		Platform:    PlatformIOS,
 		Data:        data,
 		VersionName: "0.11.51",
 		VersionCode: 191,
