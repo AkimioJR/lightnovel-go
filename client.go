@@ -95,15 +95,10 @@ func (c *Client) SetAPIEndpoint(api string) {
 }
 
 func (c *Client) doRequest(path string, data any, result any) error {
-	var reqBody io.Reader
-	if data == nil {
-		reqBody = nil
-	} else {
-		var err error
-		reqBody, err = c.newRequest(data).Json()
-		if err != nil {
-			return fmt.Errorf("create request body failed: %w", err)
-		}
+	reqData := c.newRequest(data)
+	reqBody, err := reqData.Json()
+	if err != nil {
+		return fmt.Errorf("create request body failed: %w", err)
 	}
 
 	url := c.api + path
@@ -114,7 +109,9 @@ func (c *Client) doRequest(path string, data any, result any) error {
 
 	req.Header.Set("user-agent", c.ua)
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("accept-encoding", "gzip")
+	if reqData.GZ {
+		req.Header.Set("accept-encoding", "gzip")
+	}
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -126,28 +123,25 @@ func (c *Client) doRequest(path string, data any, result any) error {
 		return fmt.Errorf("request failed with status: %s", resp.Status)
 	}
 
-	var decodeBody io.Reader
-	switch resp.Header.Get("Content-Encoding") {
-	case "gzip":
-		// fmt.Println("gzip encoded response")
+	var respBody io.Reader
+	if reqData.GZ {
 		gr, err := gzip.NewReader(resp.Body)
 		if err != nil {
 			return fmt.Errorf("gzip reader error: %w", err)
 		}
 		defer gr.Close()
-		decodeBody = gr
-
-	default:
-		decodeBody = resp.Body
+		respBody = gr
+	} else {
+		respBody = resp.Body
 	}
-	b, err := io.ReadAll(decodeBody)
+	respBodyBytes, err := io.ReadAll(respBody)
 	if err != nil {
 		return fmt.Errorf("read response body failed: %w", err)
 	}
 
 	// fmt.Println(string(b))
 	var r Response
-	err = json.Unmarshal(b, &r)
+	err = json.Unmarshal(respBodyBytes, &r)
 	if err != nil {
 		return fmt.Errorf("decode response failed: %w", err)
 	}
