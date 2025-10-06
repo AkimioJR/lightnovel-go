@@ -1,6 +1,9 @@
 package lightnovel
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 // ExperienceLevel represents a level in the experience system
 type ExperienceLevel struct {
@@ -89,6 +92,22 @@ func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
 	c.credentials = &UserCredentials{
 		UserUID:         data.UserUID,
 		UserSecurityKey: data.UserSecurityKey,
+	}
+	return &data, nil
+}
+
+var ErrNotSignedIn = fmt.Errorf("user not signed in")
+
+// https://api.lightnovel.fun/api/user/info
+func (c *Client) GetUserInfo() (*UserProfileDetail, error) {
+	if c.credentials == nil {
+		return nil, ErrNotSignedIn
+	}
+
+	var data UserProfileDetail
+	err := c.doRequest(http.MethodPost, "/api/user/info", c.credentials, &data)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user info: %w", err)
 	}
 	return &data, nil
 }
