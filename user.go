@@ -53,7 +53,7 @@ type UserProfileBase struct {
 	NickName   string        `json:"nickname"`
 	Avatar     string        `json:"avatar"` // Avatar image URL
 	Passer     UintBool      `json:"passer"`
-	Gender     UintBool      `json:"gender"`
+	Gender     GenderType    `json:"gender"`
 	Sign       string        `json:"sign"`
 	Status     UintBool      `json:"status"`
 	Banner     string        `json:"banner"`       // Banner image URL

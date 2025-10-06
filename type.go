@@ -104,3 +104,15 @@ func (c *ClientType) MarshalJSON() ([]byte, error) {
 	}
 	return fmt.Appendf(nil, `"%s"`, s), nil
 }
+
+type GenderType uint8
+
+const (
+	GenderUnknown GenderType = iota
+	GenderMale
+	GenderFemale
+)
+
+func (g *GenderType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(uint8(*g))
+}
