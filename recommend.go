@@ -50,3 +50,39 @@ func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 	}
 	return data, nil
 }
+
+type GetRecommendRankRequest struct {
+	UserSecurityKey
+	ParentGroupId uint `json:"parent_gid"`
+	GroupId       uint `json:"gid"`
+}
+type ArticleRankInfo struct {
+	Rank      uint     `json:"rank"`
+	ArticleId uint     `json:"aid"`
+	Title     string   `json:"title"`
+	Cover     string   `json:"cover"` // URL
+	Comments  uint     `json:"comments"`
+	Hits      uint     `json:"hits"`
+	CoverType uint     `json:"cover_type"`
+	Time      DateTime `json:"time"`
+	SeriesId  uint     `json:"sid"`
+	Banner    string   `json:"banner"` // URL
+}
+
+// https://api.lightnovel.fun/api/recom/get-ranks
+func (c *Client) GetRecommendRank(parentGropuId uint, groupId uint) ([]ArticleRankInfo, error) {
+	if c.credentials == nil {
+		return nil, ErrNotSignedIn
+	}
+	req := GetRecommendRankRequest{
+		UserSecurityKey: c.credentials.UserSecurityKey,
+		ParentGroupId:   parentGropuId,
+		GroupId:         groupId,
+	}
+	var data []ArticleRankInfo
+	err := c.doRequest(http.MethodPost, "/api/recom/get-ranks", req, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
