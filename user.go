@@ -73,6 +73,8 @@ type UserLoginResponse struct {
 	UserSecurityKey
 }
 
+var ErrLoginFailed = fmt.Errorf("login failed")
+
 // https://api.lightnovel.fun/api/user/login
 func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
 
@@ -87,6 +89,10 @@ func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
 	)
 	if err != nil {
 		return nil, err
+	}
+
+	if data.UserUID.UID == 0 || data.UserSecurityKey.SecurityKey == "" {
+		return nil, ErrLoginFailed
 	}
 
 	c.credentials = &UserCredentials{
