@@ -32,6 +32,16 @@ type UserSecurityKey struct {
 	SecurityKey string `json:"security_key"`
 }
 
+type Medals struct {
+	MedalId    uint     `json:"medal_id"`
+	Name       string   `json:"name"`
+	Desc       string   `json:"desc"`
+	Type       uint     `json:"type"`
+	Equip      uint     `json:"equip"`
+	Expiration DateTime `json:"expiration"`
+	Img        string   `json:"img"`
+}
+
 // UserCredentials represents user authentication information
 type UserCredentials struct {
 	UserUID
@@ -48,8 +58,8 @@ type UserProfileBase struct {
 	Status     uint          `json:"status"`
 	Banner     string        `json:"banner"`       // Banner image URL
 	BanEndDate DateTime      `json:"ban_end_date"` // Date when ban ends
-	Medals     []any         `json:"medals"`       // unknown structure
-	Following  uint          `json:"following"`    // Number of users this user is following
+	Medals     []Medals      `json:"medals"`
+	Following  uint          `json:"following"` // Number of users this user is following
 	Comments   uint          `json:"comments"`
 	Favorites  uint          `json:"favorites"`
 	Articles   uint          `json:"articles"`
