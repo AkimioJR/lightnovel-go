@@ -6,7 +6,7 @@ type GetSeriesInfoRequest struct {
 }
 
 type SeriesInfo struct {
-	Sid           uint                `json:"sid"`
+	SeriesId      uint                `json:"sid"`
 	Name          string              `json:"name"`
 	GroupId       uint                `json:"gid"`
 	ParentGroupId uint                `json:"parent_gid"`
