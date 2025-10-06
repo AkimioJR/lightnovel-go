@@ -2,6 +2,47 @@ package lightnovel
 
 import "net/http"
 
+type GetArticleCategoriesRequest struct {
+	UserSecurityKey
+	Cache bool `json:"cache"`
+	Depth uint `json:"depth"` // 2 -> GroupCategoryInfo
+}
+
+type ParentGroupCategoryInfo struct {
+	GroupId   uint                `json:"gid"`
+	Name      string              `json:"name"`
+	Logo      string              `json:"logo"` // URL
+	CoverType uint                `json:"cover_type"`
+	Order     uint                `json:"order"`
+	Items     []GroupCategoryInfo `json:"items"`
+}
+
+type GroupCategoryInfo struct {
+	ParentGropuId uint   `json:"gid"`
+	Name          string `json:"name"`
+	Logo          string `json:"logo"`
+	CoverType     uint   `json:"cover_type"`
+	Order         uint   `json:"order"`
+}
+
+// https://api.lightnovel.fun/api/category/get-article-cates
+func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCategoryInfo, error) {
+	if c.credentials == nil {
+		return nil, ErrNotSignedIn
+	}
+	req := GetArticleCategoriesRequest{
+		UserSecurityKey: c.credentials.UserSecurityKey,
+		Cache:           cache,
+		Depth:           depth,
+	}
+	var data []ParentGroupCategoryInfo
+	err := c.doRequest(http.MethodPost, "/api/category/get-article-cates", req, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 type GetArticleByCategoryRequest struct {
 	UserSecurityKey
 	ParentGropuId uint `json:"parent_gid"`
@@ -26,7 +67,7 @@ type CategoryInfo struct {
 
 	// 作者信息
 	Author string `json:"author"`
-	Avatar string `json:"avatar"`
+	Avatar string `json:"avatar"` // URL
 	IsTop  uint   `json:"is_top"`
 
 	// 仅多章节小说包含
