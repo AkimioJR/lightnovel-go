@@ -1,6 +1,10 @@
 package lightnovel
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 type UintBool bool
 
@@ -22,6 +26,26 @@ func (b UintBool) MarshalJSON() ([]byte, error) {
 	} else {
 		return []byte("0"), nil
 	}
+}
+
+type DateTime time.Time
+
+func (dt *DateTime) UnmarshalJSON(data []byte) error {
+	var s string
+	err := json.Unmarshal(data, &s)
+	if err != nil {
+		return err
+	}
+	t, err := time.Parse(time.DateTime, s)
+	if err != nil {
+		return err
+	}
+	*dt = DateTime(t)
+	return nil
+}
+
+func (dt DateTime) MarshalJSON() ([]byte, error) {
+	return []byte(time.Time(dt).Format(`"2006-01-02 15:04:05"`)), nil
 }
 
 const UnknownStr = "unknown"

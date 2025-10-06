@@ -47,7 +47,7 @@ type UserProfileBase struct {
 	Sign       string        `json:"sign"`
 	Status     uint          `json:"status"`
 	Banner     string        `json:"banner"`       // Banner image URL
-	BanEndDate string        `json:"ban_end_date"` // Date when ban ends "000-00-00 00:00:00" time.DateTime format
+	BanEndDate DateTime      `json:"ban_end_date"` // Date when ban ends
 	Medals     []any         `json:"medals"`       // unknown structure
 	Following  uint          `json:"following"`    // Number of users this user is following
 	Comments   uint          `json:"comments"`

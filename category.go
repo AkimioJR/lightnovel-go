@@ -52,18 +52,18 @@ type GetArticleByCategoryRequest struct {
 }
 
 type CategoryInfo struct {
-	ArticleId uint   `json:"aid"`
-	Banner    string `json:"banner"` // URL
-	Cover     string `json:"cover"`  // URL
-	Title     string `json:"title"`
-	Uid       uint   `json:"uid"`
-	Hits      uint   `json:"hits"`
-	Time      string `json:"time"`      // "2025-10-04 04:15:40" time.DateTime format
-	LastTime  string `json:"last_time"` // "2025-10-04 04:15:40" time.DateTime format
-	Comments  uint   `json:"comments"`
-	GroupId   uint   `json:"gid"`
-	GroupName string `json:"group_name"`
-	CoverType uint   `json:"cover_type"`
+	ArticleId uint     `json:"aid"`
+	Banner    string   `json:"banner"` // URL
+	Cover     string   `json:"cover"`  // URL
+	Title     string   `json:"title"`
+	Uid       uint     `json:"uid"`
+	Hits      uint     `json:"hits"`
+	Time      DateTime `json:"time"`
+	LastTime  DateTime `json:"last_time"`
+	Comments  uint     `json:"comments"`
+	GroupId   uint     `json:"gid"`
+	GroupName string   `json:"group_name"`
+	CoverType uint     `json:"cover_type"`
 
 	// 作者信息
 	Author string `json:"author"`
