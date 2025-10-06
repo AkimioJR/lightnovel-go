@@ -20,16 +20,17 @@ type Request struct {
 	Sign        string       `json:"sign"`
 }
 
-func newRequest(data any) *Request {
+func (c *Client) newRequest(data any) *Request {
 	return &Request{
-		GZ:          false,
-		Isencrypted: false,
-		Client:      ClientApp,
-		Platform:    PlatformIOS,
-		Data:        data,
-		VersionName: "0.11.51",
-		VersionCode: 191,
-		Sign:        "",
+		GZ:          c.GZip,
+		Isencrypted: c.Encrypted,
+		Client:      c.Client,
+		Platform:    c.Platform,
+		VersionName: c.VersionName,
+		VersionCode: c.VersionCode,
+		Sign:        c.Sign,
+
+		Data: data,
 	}
 }
 
@@ -53,6 +54,14 @@ type Client struct {
 	ua         string
 
 	credentials UserCredentials
+
+	GZip        Bool
+	Encrypted   Bool
+	Client      ClientType
+	Platform    PlatformType
+	VersionName string
+	VersionCode uint
+	Sign        string
 }
 
 func NewClient() *Client {
@@ -60,6 +69,14 @@ func NewClient() *Client {
 		api:        "https://api.lightnovel.fun",
 		httpClient: &http.Client{},
 		ua:         "Dart/2.10 (dart:io)",
+
+		GZip:        false,
+		Encrypted:   false,
+		Client:      ClientApp,
+		Platform:    PlatformIOS,
+		VersionName: "0.11.51",
+		VersionCode: 191,
+		Sign:        "",
 	}
 	return &c
 }
@@ -83,7 +100,7 @@ func (c *Client) doRequest(path string, data any, result any) error {
 		reqBody = nil
 	} else {
 		var err error
-		reqBody, err = newRequest(data).Json()
+		reqBody, err = c.newRequest(data).Json()
 		if err != nil {
 			return fmt.Errorf("create request body failed: %w", err)
 		}
