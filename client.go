@@ -10,18 +10,18 @@ import (
 )
 
 type Request struct {
-	GZ          int    `json:"gz"`
-	Client      string `json:"client"`
-	Platform    string `json:"platform"`
-	Data        any    `json:"d"`
-	VersionName string `json:"ver_name"`
-	VersionCode int    `json:"ver_code"`
-	Sign        string `json:"sign"`
+	GZ          UintBool `json:"gz"`
+	Client      string   `json:"client"`
+	Platform    string   `json:"platform"`
+	Data        any      `json:"d"`
+	VersionName string   `json:"ver_name"`
+	VersionCode int      `json:"ver_code"`
+	Sign        string   `json:"sign"`
 }
 
 func newRequest(data any) *Request {
 	return &Request{
-		GZ:          0,
+		GZ:          false,
 		Client:      "app",
 		Platform:    "ios",
 		Data:        data,
