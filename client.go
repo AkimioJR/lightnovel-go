@@ -135,3 +135,10 @@ func (c *Client) doRequest(method string, path string, data any, result any) err
 
 	return nil
 }
+
+func (c *Client) SetUserCredentials(uid uint, securityKey string) {
+	c.credentials = &UserCredentials{
+		UserUID:         UserUID{UID: uid},
+		UserSecurityKey: UserSecurityKey{SecurityKey: securityKey},
+	}
+}
