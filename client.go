@@ -77,9 +77,9 @@ func (c *Client) SetAPIEndpoint(api string) {
 	c.api = api
 }
 
-func (c *Client) doRequest(method string, path string, data any, result any) error {
+func (c *Client) doRequest(path string, data any, result any) error {
 	var reqBody io.Reader
-	if method == http.MethodGet || data == nil {
+	if data == nil {
 		reqBody = nil
 	} else {
 		var err error
@@ -90,7 +90,7 @@ func (c *Client) doRequest(method string, path string, data any, result any) err
 	}
 
 	url := c.api + path
-	req, err := http.NewRequest(method, url, reqBody)
+	req, err := http.NewRequest(http.MethodPost, url, reqBody)
 	if err != nil {
 		return fmt.Errorf("create request failed: %w", err)
 	}

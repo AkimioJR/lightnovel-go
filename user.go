@@ -2,7 +2,6 @@ package lightnovel
 
 import (
 	"fmt"
-	"net/http"
 )
 
 // ExperienceLevel represents a level in the experience system
@@ -89,9 +88,8 @@ var ErrLoginFailed = fmt.Errorf("login failed")
 
 // https://api.lightnovel.fun/api/user/login
 func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
-
 	var data UserLoginResponse
-	err := c.doRequest(http.MethodPost,
+	err := c.doRequest(
 		"/api/user/login",
 		LoginRequest{
 			Username: username,
@@ -115,7 +113,7 @@ var ErrNotSignedIn = fmt.Errorf("user not signed in")
 // https://api.lightnovel.fun/api/user/info
 func (c *Client) GetUserInfo() (*UserProfileDetail, error) {
 	var data UserProfileDetail
-	err := c.doRequest(http.MethodPost, "/api/user/info", c.credentials, &data)
+	err := c.doRequest("/api/user/info", c.credentials, &data)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user info: %w", err)
 	}

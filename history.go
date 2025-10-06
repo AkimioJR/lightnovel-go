@@ -1,7 +1,5 @@
 package lightnovel
 
-import "net/http"
-
 type AddHistoryRequest struct {
 	UserSecurityKey
 	FId     uint `json:"fid"`
@@ -15,5 +13,5 @@ func (c *Client) AddHistory(fId uint, classId uint) error {
 		FId:             fId,
 		ClassId:         classId,
 	}
-	return c.doRequest(http.MethodPost, "/api/history/add-history", req, nil)
+	return c.doRequest("/api/history/add-history", req, nil)
 }

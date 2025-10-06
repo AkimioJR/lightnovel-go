@@ -1,7 +1,5 @@
 package lightnovel
 
-import "net/http"
-
 type GetCategoriesRequest struct {
 	UserSecurityKey
 	ParentGroupId uint `json:"parent_gid"`
@@ -21,7 +19,7 @@ func (c *Client) GetCategories(parentGroupId uint) ([]CategoryInfo, error) {
 		ParentGroupId:   parentGroupId,
 	}
 	var data []CategoryInfo
-	err := c.doRequest(http.MethodPost, "/api/category/get-categories", req, &data)
+	err := c.doRequest("/api/category/get-categories", req, &data)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +57,7 @@ func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCate
 		Depth:           depth,
 	}
 	var data []ParentGroupCategoryInfo
-	err := c.doRequest(http.MethodPost, "/api/category/get-article-cates", req, &data)
+	err := c.doRequest("/api/category/get-article-cates", req, &data)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +123,7 @@ func (c *Client) GetArticleByCategory(parentGropuId uint, groupId uint, pageSize
 		Page:            page,
 	}
 	var data GetArticleByCategoryResponse
-	err := c.doRequest(http.MethodPost, "/api/category/get-article-by-cate", req, &data)
+	err := c.doRequest("/api/category/get-article-by-cate", req, &data)
 	if err != nil {
 		return nil, err
 	}

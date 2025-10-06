@@ -20,7 +20,7 @@ func (c *Client) GetArticleTags(articleId uint) ([]ArticleTag, error) {
 		ArticleId:       articleId,
 	}
 	var data []ArticleTag
-	err := c.doRequest("POST", "/api/tag/get-article-tags", req, &data)
+	err := c.doRequest("/api/tag/get-article-tags", req, &data)
 	if err != nil {
 		return nil, err
 	}

@@ -1,9 +1,5 @@
 package lightnovel
 
-import (
-	"net/http"
-)
-
 type Alias struct {
 	ID    uint   `json:"id"`
 	Alias string `json:"alias"`
@@ -12,7 +8,7 @@ type Alias struct {
 // https://api.lightnovel.fun/api/search/get-search-tags
 func (c *Client) SearchTags() ([]Alias, error) {
 	var tags []Alias
-	err := c.doRequest(http.MethodPost, "/api/search/get-search-tags", nil, &tags)
+	err := c.doRequest("/api/search/get-search-tags", nil, &tags)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +116,7 @@ func search[T any](c *Client, query string, page uint, t ContentType) (*T, error
 	// b, _ := json.Marshal(newRequest(req))
 	// fmt.Println(string(b))
 	var data T
-	err := c.doRequest(http.MethodPost, "/api/search/search-result", req, &data)
+	err := c.doRequest("/api/search/search-result", req, &data)
 	if err != nil {
 		return nil, err
 	}

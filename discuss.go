@@ -1,7 +1,5 @@
 package lightnovel
 
-import "net/http"
-
 type GetDiscussTopicRequest struct {
 	UserSecurityKey
 	ArticleId uint `json:"aid"`
@@ -48,7 +46,7 @@ func (c *Client) GetDiscussTopic(articleId uint, pageSize uint, page uint) (*Get
 		Page:            page,
 	}
 	var data GetDiscussTopicResponse
-	err := c.doRequest(http.MethodPost, "/api/discuss/get-topic", req, &data)
+	err := c.doRequest("/api/discuss/get-topic", req, &data)
 	if err != nil {
 		return nil, err
 	}

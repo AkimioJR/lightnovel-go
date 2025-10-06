@@ -54,7 +54,7 @@ func (c *Client) GetSeriesInfo(seriesId uint) (*SeriesInfo, error) {
 		SeriesId:        seriesId,
 	}
 	var data SeriesInfo
-	err := c.doRequest("POST", "/api/series/get-info", req, &data)
+	err := c.doRequest("/api/series/get-info", req, &data)
 	if err != nil {
 		return nil, err
 	}

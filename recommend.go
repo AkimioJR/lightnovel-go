@@ -1,7 +1,5 @@
 package lightnovel
 
-import "net/http"
-
 type RecommendItem struct {
 	GroupId    uint        `json:"gid"`
 	Type       uint        `json:"type"`
@@ -41,7 +39,7 @@ func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 	req.ClassID = classID
 
 	var data []RecommendItem
-	err := c.doRequest(http.MethodPost, "/api/recom/get-recommends", req, &data)
+	err := c.doRequest("/api/recom/get-recommends", req, &data)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +72,7 @@ func (c *Client) GetRecommendRank(parentGropuId uint, groupId uint) ([]ArticleRa
 		GroupId:         groupId,
 	}
 	var data []ArticleRankInfo
-	err := c.doRequest(http.MethodPost, "/api/recom/get-ranks", req, &data)
+	err := c.doRequest("/api/recom/get-ranks", req, &data)
 	if err != nil {
 		return nil, err
 	}

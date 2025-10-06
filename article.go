@@ -1,7 +1,5 @@
 package lightnovel
 
-import "net/http"
-
 type ArticleDetail struct {
 	ArticleId     uint             `json:"aid"`
 	UserId        uint             `json:"uid"`
@@ -63,7 +61,7 @@ func (c *Client) GetArticleDetail(articleId uint, noContent bool) (*ArticleDetai
 		NoContent:       noContent,
 	}
 	var data ArticleDetail
-	err := c.doRequest(http.MethodPost, "/api/article/get-detail", req, &data)
+	err := c.doRequest("/api/article/get-detail", req, &data)
 	if err != nil {
 		return nil, err
 	}
