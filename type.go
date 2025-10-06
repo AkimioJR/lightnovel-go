@@ -121,3 +121,15 @@ const (
 func (g *GenderType) MarshalJSON() ([]byte, error) {
 	return json.Marshal(uint8(*g))
 }
+
+type ContentType uint8
+
+const (
+	ContentGeneral    ContentType = iota // 综合
+	ContentUser                          // 用户
+	ContentSeries                        // 集合
+	ContentNews                          // 资讯
+	ContentAnime                         // 动漫
+	ContentManga                         // 漫画
+	ContentLightNovel                    // 轻小说
+)
