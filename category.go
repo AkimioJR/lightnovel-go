@@ -2,6 +2,35 @@ package lightnovel
 
 import "net/http"
 
+type GetCategoriesRequest struct {
+	UserSecurityKey
+	ParentGroupId uint `json:"parent_gid"`
+}
+
+type CategoryInfo struct {
+	GroupId    int64    `json:"gid"`
+	Name       string   `json:"name"`
+	PictureUrl string   `json:"pic"`
+	LastTime   DateTime `json:"last_time"`
+}
+
+// https://api.lightnovel.fun/api/category/get-categories
+func (c *Client) GetCategories(parentGroupId uint) ([]CategoryInfo, error) {
+	if c.credentials == nil {
+		return nil, ErrNotSignedIn
+	}
+	req := GetCategoriesRequest{
+		UserSecurityKey: c.credentials.UserSecurityKey,
+		ParentGroupId:   parentGroupId,
+	}
+	var data []CategoryInfo
+	err := c.doRequest(http.MethodPost, "/api/category/get-categories", req, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 type GetArticleCategoriesRequest struct {
 	UserSecurityKey
 	Cache bool `json:"cache"`
