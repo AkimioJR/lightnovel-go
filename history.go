@@ -13,6 +13,6 @@ func (c *Client) AddHistory(classId uint, fId uint) error {
 		ClassId:         classId,
 		FId:             fId,
 	}
-	_, err := doRequest[any](c, "/api/history/add-history", req)
+	_, err := doRequest[struct{}](c, "/api/history/add-history", req)
 	return err
 }
