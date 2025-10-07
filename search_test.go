@@ -8,12 +8,13 @@ import (
 
 func TestSearchGeneral(t *testing.T) {
 	client := NewClient()
-	data, err := client.SearchGeneral("刀剑", 1)
-	assert.NoError(t, err)
-	assert.NotNil(t, data)
-	assert.Greater(t, len(data.Collections), 0)
-	assert.Greater(t, len(data.Users), 0)
-	t.Logf("%+v", data)
+	_, err := client.SearchGeneral("刀剑", 1)
+	assert.ErrorAs(t, err, &ErrNotSignedIn)
+	// assert.NoError(t, err)
+	// assert.NotNil(t, data)
+	// assert.Greater(t, len(data.Collections), 0)
+	// assert.Greater(t, len(data.Users), 0)
+	// t.Logf("%+v", data)
 }
 
 func TestSearchUsers(t *testing.T) {
