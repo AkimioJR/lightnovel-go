@@ -1,7 +1,7 @@
 package lightnovel
 
 type RecommendItem struct {
-	GroupId    uint        `json:"gid"`
+	GroupId    GroupID     `json:"gid"`
 	Type       uint        `json:"type"`
 	Title      string      `json:"title"`
 	Rows       uint        `json:"rows"`
@@ -13,18 +13,18 @@ type RecommendItem struct {
 }
 
 type BookItems struct {
-	Id              uint   `json:"id"`
-	Type            uint   `json:"type"`
-	Title           string `json:"title"`
-	ActionType      uint   `json:"action_type"`
-	ActionParams    uint   `json:"action_params"`
-	PictureUrl      string `json:"pic_url"`
-	GroupId         uint   `json:"gid"`
-	GroupName       string `json:"group_name"`
-	ParentGroupId   uint   `json:"parent_gid"`
-	ParentGroupName string `json:"parent_group_name"`
-	Comments        uint   `json:"comments"`
-	Hits            uint   `json:"hits"`
+	Id              uint          `json:"id"`
+	Type            uint          `json:"type"`
+	Title           string        `json:"title"`
+	ActionType      uint          `json:"action_type"`
+	ActionParams    uint          `json:"action_params"`
+	PictureUrl      string        `json:"pic_url"`
+	GroupId         GroupID       `json:"gid"`
+	GroupName       string        `json:"group_name"`
+	ParentGroupId   ParentGroupID `json:"parent_gid"`
+	ParentGroupName string        `json:"parent_group_name"`
+	Comments        uint          `json:"comments"`
+	Hits            uint          `json:"hits"`
 }
 
 type RecommendRequest struct {
@@ -49,8 +49,8 @@ func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 
 type GetRecommendRankRequest struct {
 	UserSecurityKey
-	ParentGroupId uint `json:"parent_gid"`
-	GroupId       uint `json:"gid"`
+	ParentGroupId ParentGroupID `json:"parent_gid"`
+	GroupId       GroupID       `json:"gid"`
 }
 type ArticleRankInfo struct {
 	Rank      uint     `json:"rank"`
@@ -68,7 +68,7 @@ type ArticleRankInfo struct {
 // GetRecommendRank retrieves article rankings
 //
 // https://api.lightnovel.fun/api/recom/get-ranks
-func (c *Client) GetRecommendRank(parentGropuId uint, groupId uint) ([]ArticleRankInfo, error) {
+func (c *Client) GetRecommendRank(parentGropuId ParentGroupID, groupId GroupID) ([]ArticleRankInfo, error) {
 	req := GetRecommendRankRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGroupId:   parentGropuId,

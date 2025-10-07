@@ -8,8 +8,8 @@ type GetSeriesInfoRequest struct {
 type SeriesInfo struct {
 	SeriesId      uint                `json:"sid"`
 	Name          string              `json:"name"`
-	GroupId       uint                `json:"gid"`
-	ParentGroupId uint                `json:"parent_gid"`
+	GroupId       GroupID             `json:"gid"`
+	ParentGroupId ParentGroupID       `json:"parent_gid"`
 	Author        string              `json:"author"`
 	Intro         string              `json:"intro"`
 	Banner        string              `json:"banner"` // URL

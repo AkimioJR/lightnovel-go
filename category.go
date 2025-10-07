@@ -2,11 +2,11 @@ package lightnovel
 
 type GetCategoriesRequest struct {
 	UserSecurityKey
-	ParentGroupId uint `json:"parent_gid"`
+	ParentGroupId ParentGroupID `json:"parent_gid"`
 }
 
 type CategoryInfo struct {
-	GroupId    uint     `json:"gid"`
+	GroupId    GroupID  `json:"gid"`
 	Name       string   `json:"name"`
 	PictureUrl string   `json:"pic"`
 	LastTime   DateTime `json:"last_time"`
@@ -15,7 +15,7 @@ type CategoryInfo struct {
 // GetCategories retrieves categories
 //
 // https://api.lightnovel.fun/api/category/get-categories
-func (c *Client) GetCategories(parentGroupId uint) ([]CategoryInfo, error) {
+func (c *Client) GetCategories(parentGroupId ParentGroupID) ([]CategoryInfo, error) {
 	req := GetCategoriesRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGroupId:   parentGroupId,
@@ -35,7 +35,7 @@ type GetArticleCategoriesRequest struct {
 }
 
 type ParentGroupCategoryInfo struct {
-	GroupId   uint                `json:"gid"`
+	GroupId   GroupID             `json:"gid"`
 	Name      string              `json:"name"`
 	Logo      string              `json:"logo"` // URL
 	CoverType uint                `json:"cover_type"`
@@ -74,10 +74,10 @@ func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCate
 
 type GetArticleByCategoryRequest struct {
 	UserSecurityKey
-	ParentGroupId uint `json:"parent_gid"`
-	GroupId       uint `json:"gid"`
-	PageSize      uint `json:"pageSize"`
-	Page          uint `json:"page"`
+	ParentGroupId ParentGroupID `json:"parent_gid"`
+	GroupId       GroupID       `json:"gid"`
+	PageSize      uint          `json:"pageSize"`
+	Page          uint          `json:"page"`
 }
 
 type ArticleInfo struct {
@@ -90,7 +90,7 @@ type ArticleInfo struct {
 	Time      DateTime `json:"time"`
 	LastTime  DateTime `json:"last_time"`
 	Comments  uint     `json:"comments"`
-	GroupId   uint     `json:"gid"`
+	GroupId   GroupID  `json:"gid"`
 	GroupName string   `json:"group_name"`
 	CoverType uint     `json:"cover_type"`
 
@@ -124,7 +124,7 @@ type GetArticleByCategoryResponse struct {
 // GetArticleByCategory retrieves articles under a specific category with pagination
 //
 // https://api.lightnovel.fun/api/category/get-article-by-cate
-func (c *Client) GetArticleByCategory(parentGroupId uint, groupId uint, pageSize uint, page uint) (*GetArticleByCategoryResponse, error) {
+func (c *Client) GetArticleByCategory(parentGroupId ParentGroupID, groupId GroupID, pageSize uint, page uint) (*GetArticleByCategoryResponse, error) {
 	req := GetArticleByCategoryRequest{
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGroupId:   parentGroupId,

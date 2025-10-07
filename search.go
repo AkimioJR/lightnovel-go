@@ -40,9 +40,9 @@ type SearchSeries struct {
 	LastTime        DateTime          `json:"last_time"`
 	Hits            uint              `json:"hits"`
 	Likes           uint              `json:"likes"`
-	GroupId         uint              `json:"gid"`
+	GroupId         GroupID           `json:"gid"`
 	GroupName       string            `json:"group_name"`
-	ParentGroupId   uint              `json:"parent_gid"`
+	ParentGroupId   ParentGroupID     `json:"parent_gid"`
 	ParentGroupName string            `json:"parent_group_name"`
 	Editors         []UserProfileBase `json:"editors"`
 	HighlightedName string            `json:"highlighted_name"`
@@ -60,7 +60,7 @@ type SearchArticle struct {
 	Hits             uint     `json:"hits"`
 	Comments         uint     `json:"comments"`
 	Time             DateTime `json:"time"`
-	GroupId          uint     `json:"gid"`
+	GroupId          GroupID  `json:"gid"`
 	GroupName        string   `json:"group_name"`
 	ParentGid        uint     `json:"parent_gid"`
 	ParentGroupName  string   `json:"parent_group_name"`
@@ -83,10 +83,10 @@ type SearchNew struct {
 	Comments  uint     `json:"comments"`
 	Time      DateTime `json:"time"`
 
-	GroupId         uint   `json:"gid"`
-	GroupName       string `json:"group_name"`
-	ParentGroupId   uint   `json:"parent_gid"`
-	ParentGroupName string `json:"parent_group_name"`
+	GroupId         GroupID       `json:"gid"`
+	GroupName       string        `json:"group_name"`
+	ParentGroupId   ParentGroupID `json:"parent_gid"`
+	ParentGroupName string        `json:"parent_group_name"`
 
 	SeriesId         uint   `json:"sid"`
 	Empty            Bool   `json:"empty"`
