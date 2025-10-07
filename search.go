@@ -7,12 +7,11 @@ type Alias struct {
 
 // https://api.lightnovel.fun/api/search/get-search-tags
 func (c *Client) SearchTags() ([]Alias, error) {
-	var tags []Alias
-	err := c.doRequest("/api/search/get-search-tags", nil, &tags)
+	resp, err := doRequest[[]Alias](c, "/api/search/get-search-tags", nil)
 	if err != nil {
 		return nil, err
 	}
-	return tags, nil
+	return resp.Data, nil
 }
 
 type SearchRequest struct {
@@ -113,14 +112,11 @@ func search[T any](c *Client, query string, page uint, t ContentType) (*T, error
 		Page:            page,
 	}
 
-	// b, _ := json.Marshal(newRequest(req))
-	// fmt.Println(string(b))
-	var data T
-	err := c.doRequest("/api/search/search-result", req, &data)
+	resp, err := doRequest[T](c, "/api/search/search-result", req)
 	if err != nil {
 		return nil, err
 	}
-	return &data, nil
+	return &resp.Data, nil
 }
 
 func (c *Client) SearchGeneral(query string, page uint) (*SearchGeneralResponse, error) {

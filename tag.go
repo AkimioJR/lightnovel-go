@@ -19,10 +19,10 @@ func (c *Client) GetArticleTags(articleId uint) ([]ArticleTag, error) {
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ArticleId:       articleId,
 	}
-	var data []ArticleTag
-	err := c.doRequest("/api/tag/get-article-tags", req, &data)
+
+	resp, err := doRequest[[]ArticleTag](c, "/api/tag/get-article-tags", req)
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+	return resp.Data, nil
 }

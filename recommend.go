@@ -38,12 +38,11 @@ func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 	req.UserSecurityKey = c.credentials.UserSecurityKey
 	req.ClassID = classID
 
-	var data []RecommendItem
-	err := c.doRequest("/api/recom/get-recommends", req, &data)
+	resp, err := doRequest[[]RecommendItem](c, "/api/recom/get-recommends", req)
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+	return resp.Data, nil
 }
 
 type GetRecommendRankRequest struct {
@@ -71,10 +70,10 @@ func (c *Client) GetRecommendRank(parentGropuId uint, groupId uint) ([]ArticleRa
 		ParentGroupId:   parentGropuId,
 		GroupId:         groupId,
 	}
-	var data []ArticleRankInfo
-	err := c.doRequest("/api/recom/get-ranks", req, &data)
+
+	resp, err := doRequest[[]ArticleRankInfo](c, "/api/recom/get-ranks", req)
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+	return resp.Data, nil
 }

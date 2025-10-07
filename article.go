@@ -60,10 +60,9 @@ func (c *Client) GetArticleDetail(articleId uint, noContent bool) (*ArticleDetai
 		ArticleId:       articleId,
 		NoContent:       noContent,
 	}
-	var data ArticleDetail
-	err := c.doRequest("/api/article/get-detail", req, &data)
+	resp, err := doRequest[ArticleDetail](c, "/api/article/get-detail", req)
 	if err != nil {
 		return nil, err
 	}
-	return &data, nil
+	return &resp.Data, nil
 }

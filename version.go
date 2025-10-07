@@ -2,10 +2,9 @@ package lightnovel
 
 // https://api.lightnovel.fun/api/smiley/get-ver
 func (c *Client) GetVersion() (uint64, error) {
-	var verion uint64
-	err := c.doRequest("/api/smiley/get-ver", nil, &verion)
+	resp, err := doRequest[uint64](c, "/api/smiley/get-ver", nil)
 	if err != nil {
 		return 0, err
 	}
-	return verion, nil
+	return resp.Data, nil
 }

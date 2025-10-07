@@ -53,10 +53,10 @@ func (c *Client) GetSeriesInfo(seriesId uint) (*SeriesInfo, error) {
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		SeriesId:        seriesId,
 	}
-	var data SeriesInfo
-	err := c.doRequest("/api/series/get-info", req, &data)
+
+	resp, err := doRequest[SeriesInfo](c, "/api/series/get-info", req)
 	if err != nil {
 		return nil, err
 	}
-	return &data, nil
+	return &resp.Data, nil
 }

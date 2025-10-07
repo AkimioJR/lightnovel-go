@@ -18,12 +18,12 @@ func (c *Client) GetCategories(parentGroupId uint) ([]CategoryInfo, error) {
 		UserSecurityKey: c.credentials.UserSecurityKey,
 		ParentGroupId:   parentGroupId,
 	}
-	var data []CategoryInfo
-	err := c.doRequest("/api/category/get-categories", req, &data)
+
+	resp, err := doRequest[[]CategoryInfo](c, "/api/category/get-categories", req)
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+	return resp.Data, nil
 }
 
 type GetArticleCategoriesRequest struct {
@@ -56,12 +56,12 @@ func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCate
 		Cache:           cache,
 		Depth:           depth,
 	}
-	var data []ParentGroupCategoryInfo
-	err := c.doRequest("/api/category/get-article-cates", req, &data)
+
+	resp, err := doRequest[[]ParentGroupCategoryInfo](c, "/api/category/get-article-cates", req)
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+	return resp.Data, nil
 }
 
 type GetArticleByCategoryRequest struct {
@@ -122,10 +122,10 @@ func (c *Client) GetArticleByCategory(parentGropuId uint, groupId uint, pageSize
 		PageSize:        pageSize,
 		Page:            page,
 	}
-	var data GetArticleByCategoryResponse
-	err := c.doRequest("/api/category/get-article-by-cate", req, &data)
+
+	resp, err := doRequest[GetArticleByCategoryResponse](c, "/api/category/get-article-by-cate", req)
 	if err != nil {
 		return nil, err
 	}
-	return &data, nil
+	return &resp.Data, nil
 }

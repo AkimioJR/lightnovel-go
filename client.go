@@ -41,9 +41,9 @@ func (r *Request) Json() (*bytes.Reader, error) {
 	return bytes.NewReader(data), nil
 }
 
-type Response struct {
+type Response[T any] struct {
 	Code      uint   `json:"code"`
-	Data      any    `json:"data"`
+	Data      T      `json:"data"`
 	TimeStamp uint64 `json:"t"`
 }
 
@@ -93,17 +93,17 @@ func (c *Client) SetAPIEndpoint(api string) {
 	c.api = api
 }
 
-func (c *Client) doRequest(path string, data any, result any) error {
+func doRequest[T any](c *Client, path string, data any) (*Response[T], error) {
 	reqData := c.newRequest(data)
 	reqBody, err := reqData.Json()
 	if err != nil {
-		return fmt.Errorf("create request body failed: %w", err)
+		return nil, fmt.Errorf("create request body failed: %w", err)
 	}
 
 	url := c.api + path
 	req, err := http.NewRequest(http.MethodPost, url, reqBody)
 	if err != nil {
-		return fmt.Errorf("create request failed: %w", err)
+		return nil, fmt.Errorf("create request failed: %w", err)
 	}
 
 	req.Header.Set("user-agent", c.ua)
@@ -114,12 +114,12 @@ func (c *Client) doRequest(path string, data any, result any) error {
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("do request failed: %w", err)
+		return nil, fmt.Errorf("do request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("request failed with status: %s", resp.Status)
+		return nil, fmt.Errorf("request failed with status: %s", resp.Status)
 	}
 
 	var respBody []byte
@@ -129,34 +129,25 @@ func (c *Client) doRequest(path string, data any, result any) error {
 		respBody, err = io.ReadAll(resp.Body)
 	}
 	if err != nil {
-		return fmt.Errorf("read response body failed: %w", err)
+		return nil, fmt.Errorf("read response body failed: %w", err)
 	}
 
 	// fmt.Println(string(b))
-	var r Response
+	var r Response[T]
 	err = json.Unmarshal(respBody, &r)
 	if err != nil {
-		return fmt.Errorf("decode response failed: %w", err)
+		return nil, fmt.Errorf("decode response failed: %w", err)
 	}
 	switch r.Code {
 	case 0:
 		// Success
 	case 5:
-		return ErrNotSignedIn
+		return nil, ErrNotSignedIn
 	default:
-		return fmt.Errorf("lightnovel api error: code %d", r.Code)
+		return nil, fmt.Errorf("lightnovel api error: code %d", r.Code)
 	}
 
-	respData, err := json.Marshal(r.Data)
-	if err != nil {
-		return fmt.Errorf("marshal response data failed: %w", err)
-	}
-
-	if err := json.Unmarshal(respData, result); err != nil {
-		return fmt.Errorf("unmarshal response data failed: %w", err)
-	}
-
-	return nil
+	return &r, nil
 }
 
 func (c *Client) SetUserCredentials(uid uint, securityKey string) {

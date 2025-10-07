@@ -88,34 +88,32 @@ var ErrLoginFailed = fmt.Errorf("login failed")
 
 // https://api.lightnovel.fun/api/user/login
 func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
-	var data UserLoginResponse
-	err := c.doRequest(
+	resp, err := doRequest[UserLoginResponse](
+		c,
 		"/api/user/login",
 		LoginRequest{
 			Username: username,
 			Password: password,
 		},
-		&data,
 	)
 	if err != nil {
 		return nil, err
 	}
 
-	if data.UserUID.UID == 0 || data.UserSecurityKey.SecurityKey == "" {
+	if resp.Data.UserUID.UID == 0 || resp.Data.UserSecurityKey.SecurityKey == "" {
 		return nil, ErrLoginFailed
 	}
-	c.SetUserCredentials(data.UserUID.UID, data.UserSecurityKey.SecurityKey)
-	return &data, nil
+	c.SetUserCredentials(resp.Data.UserUID.UID, resp.Data.UserSecurityKey.SecurityKey)
+	return &resp.Data, nil
 }
 
 var ErrNotSignedIn = fmt.Errorf("user not signed in")
 
 // https://api.lightnovel.fun/api/user/info
 func (c *Client) GetUserInfo() (*UserProfileDetail, error) {
-	var data UserProfileDetail
-	err := c.doRequest("/api/user/info", c.credentials, &data)
+	resp, err := doRequest[UserProfileDetail](c, "/api/user/info", c.credentials)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user info: %w", err)
 	}
-	return &data, nil
+	return &resp.Data, nil
 }

@@ -45,10 +45,10 @@ func (c *Client) GetDiscussTopic(articleId uint, pageSize uint, page uint) (*Get
 		PageSize:        pageSize,
 		Page:            page,
 	}
-	var data GetDiscussTopicResponse
-	err := c.doRequest("/api/discuss/get-topic", req, &data)
+
+	resp, err := doRequest[GetDiscussTopicResponse](c, "/api/discuss/get-topic", req)
 	if err != nil {
 		return nil, err
 	}
-	return &data, nil
+	return &resp.Data, nil
 }

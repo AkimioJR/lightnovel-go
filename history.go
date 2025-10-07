@@ -13,5 +13,6 @@ func (c *Client) AddHistory(fId uint, classId uint) error {
 		FId:             fId,
 		ClassId:         classId,
 	}
-	return c.doRequest("/api/history/add-history", req, nil)
+	_, err := doRequest[any](c, "/api/history/add-history", req)
+	return err
 }
