@@ -6,6 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSearchTags(t *testing.T) {
+	client := NewClient()
+	data, err := client.SearchTags()
+	assert.NoError(t, err)
+	assert.Greater(t, len(data), 0)
+	t.Logf("%+v", data)
+}
+
 func TestSearchGeneral(t *testing.T) {
 	client := NewClient()
 	_, err := client.SearchGeneral("刀剑", 1)
