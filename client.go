@@ -41,10 +41,37 @@ func (r *Request) Json() (*bytes.Reader, error) {
 	return bytes.NewReader(data), nil
 }
 
-type Response[T any] struct {
+type BaseResponse struct {
 	Code      uint   `json:"code"`
-	Data      T      `json:"data"`
 	TimeStamp uint64 `json:"t"`
+}
+type DataResponse[T any] struct {
+	Data T `json:"data"`
+}
+
+type Response[T any] struct {
+	BaseResponse
+	DataResponse[T]
+}
+
+func (r *Response[T]) UnmarshalJSON(data []byte) error {
+	var base BaseResponse
+	err := json.Unmarshal(data, &base)
+	if err != nil {
+		return err
+	}
+	r.BaseResponse = base
+
+	if base.Code != 0 { // No need to unmarshal Data if Code is not 0 (success)
+		return nil
+	}
+	var dr DataResponse[T]
+	err = json.Unmarshal(data, &dr)
+	if err != nil {
+		return err
+	}
+	r.DataResponse = dr
+	return nil
 }
 
 type Client struct {
