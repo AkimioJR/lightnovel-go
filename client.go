@@ -2,7 +2,6 @@ package lightnovel
 
 import (
 	"bytes"
-	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -123,25 +122,19 @@ func (c *Client) doRequest(path string, data any, result any) error {
 		return fmt.Errorf("request failed with status: %s", resp.Status)
 	}
 
-	var respBody io.Reader
+	var respBody []byte
 	if reqData.GZ {
-		gr, err := gzip.NewReader(resp.Body)
-		if err != nil {
-			return fmt.Errorf("gzip reader error: %w", err)
-		}
-		defer gr.Close()
-		respBody = gr
+		respBody, err = decompressResponse(resp)
 	} else {
-		respBody = resp.Body
+		respBody, err = io.ReadAll(resp.Body)
 	}
-	respBodyBytes, err := io.ReadAll(respBody)
 	if err != nil {
 		return fmt.Errorf("read response body failed: %w", err)
 	}
 
 	// fmt.Println(string(b))
 	var r Response
-	err = json.Unmarshal(respBodyBytes, &r)
+	err = json.Unmarshal(respBody, &r)
 	if err != nil {
 		return fmt.Errorf("decode response failed: %w", err)
 	}
