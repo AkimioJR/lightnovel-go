@@ -32,6 +32,8 @@ type RecommendRequest struct {
 	ClassID uint `json:"class"`
 }
 
+// GetRecommendList retrieves a list of recommended items
+//
 // https://api.lightnovel.us/api/recom/get-recommends
 func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 	var req RecommendRequest
@@ -63,6 +65,8 @@ type ArticleRankInfo struct {
 	Banner    string   `json:"banner"` // URL
 }
 
+// GetRecommendRank retrieves article rankings
+//
 // https://api.lightnovel.fun/api/recom/get-ranks
 func (c *Client) GetRecommendRank(parentGropuId uint, groupId uint) ([]ArticleRankInfo, error) {
 	req := GetRecommendRankRequest{

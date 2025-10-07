@@ -5,6 +5,8 @@ type Tag struct {
 	Alias string `json:"alias"`
 }
 
+// Get host search tags
+//
 // https://api.lightnovel.fun/api/search/get-search-tags
 func (c *Client) SearchTags() ([]Tag, error) {
 	resp, err := doRequest[[]Tag](c, "/api/search/get-search-tags", nil)
@@ -103,6 +105,8 @@ type SearchResponse[T any] struct {
 	PageInfo PageInfo `json:"page_info"`
 }
 
+// ContentType represents the type of content to search for
+//
 // https://api.lightnovel.fun/api/search/search-result
 func search[T any](c *Client, query string, page uint, t ContentType) (*T, error) {
 	req := SearchRequest{
@@ -119,31 +123,65 @@ func search[T any](c *Client, query string, page uint, t ContentType) (*T, error
 	return &resp.Data, nil
 }
 
+// SearchGeneral performs a general search
+//
+// # Need Login
+//
+// https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchGeneral(query string, page uint) (*SearchGeneralResponse, error) {
 	return search[SearchGeneralResponse](c, query, page, ContentGeneral)
 }
 
+// SearchUsers searches for users
+//
+// # Need Login
+//
+// https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchUsers(query string, page uint) (*SearchResponse[UserProfileBase], error) {
 	return search[SearchResponse[UserProfileBase]](c, query, page, ContentUser)
 }
 
+// SearchSeries searches for series
+//
+// # Need Login
+//
+// https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchSeries(query string, page uint) (*SearchResponse[SearchSeries], error) {
 	return search[SearchResponse[SearchSeries]](c, query, page, ContentSeries)
 }
 
+// SearchLightNovels searches for lightnovels
+//
+// # Need Login
+//
+// https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchLightNovels(query string, page uint) (*SearchResponse[SearchArticle], error) {
 	return search[SearchResponse[SearchArticle]](c, query, page, ContentLightNovel)
 }
 
+// SearchManga searches for manga
+//
+// # Need Login
+//
+// https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchManga(query string, page uint) (*SearchResponse[SearchArticle], error) {
 	return search[SearchResponse[SearchArticle]](c, query, page, ContentManga)
 }
 
+// SearchAnime searches for anime
+//
+// # Need Login
+//
 // https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchAnime(query string, page uint) (*SearchResponse[SearchArticle], error) {
 	return search[SearchResponse[SearchArticle]](c, query, page, ContentAnime)
 }
 
+// SearchNews searches for news for lightnovels, manga, anime and buangumi
+//
+// # Need Login
+//
+// https://api.lightnovel.fun/api/search/search-result
 func (c *Client) SearchNews(query string, page uint) (*SearchResponse[SearchNew], error) {
 	return search[SearchResponse[SearchNew]](c, query, page, ContentNews)
 }

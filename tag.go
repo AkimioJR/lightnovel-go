@@ -13,6 +13,8 @@ type ArticleTag struct {
 	IsClickable bool   `json:"is_clickable"`
 }
 
+// GetArticleTags retrieves tags associated with a specific article.
+// 
 // https://api.lightnovel.fun/api/tag/get-article-tags
 func (c *Client) GetArticleTags(articleId uint) ([]ArticleTag, error) {
 	req := GetArticleTagsRequest{

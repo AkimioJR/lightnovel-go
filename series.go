@@ -47,6 +47,8 @@ type UserReadInfo struct {
 	LastArticleId uint `json:"last_aid"`
 }
 
+// GetSeriesInfo retrieves detailed information about a specific series.
+//
 // https://api.lightnovel.fun/api/series/get-info
 func (c *Client) GetSeriesInfo(seriesId uint) (*SeriesInfo, error) {
 	req := GetSeriesInfoRequest{

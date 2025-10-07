@@ -37,6 +37,8 @@ type GetDiscussTopicResponse struct {
 	Page PageInfo       `json:"page_info"`
 }
 
+// GetDiscussTopic retrieves replies for a specific article
+//
 // https://api.lightnovel.fun/api/discuss/get-topic
 func (c *Client) GetDiscussTopic(articleId uint, pageSize uint, page uint) (*GetDiscussTopicResponse, error) {
 	req := GetDiscussTopicRequest{

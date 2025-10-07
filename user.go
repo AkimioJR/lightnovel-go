@@ -109,6 +109,8 @@ func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
 
 var ErrNotSignedIn = fmt.Errorf("user not signed in")
 
+// Get UserInfo retrieves detailed user profile information.
+// # Need Login
 // https://api.lightnovel.fun/api/user/info
 func (c *Client) GetUserInfo() (*UserProfileDetail, error) {
 	resp, err := doRequest[UserProfileDetail](c, "/api/user/info", c.credentials)

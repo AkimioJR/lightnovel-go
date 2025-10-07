@@ -12,6 +12,8 @@ type CategoryInfo struct {
 	LastTime   DateTime `json:"last_time"`
 }
 
+// GetCategories retrieves categories
+//
 // https://api.lightnovel.fun/api/category/get-categories
 func (c *Client) GetCategories(parentGroupId uint) ([]CategoryInfo, error) {
 	req := GetCategoriesRequest{
@@ -49,6 +51,12 @@ type GroupCategoryInfo struct {
 	Order         uint   `json:"order"`
 }
 
+// GetArticleCategories retrieves article categories with optional caching and depth
+//
+// depth: 1 -> ParentGroupCategoryInfo: ParentGroupCategoryInfo.Items == nil
+//
+// depth: 2 -> GroupCategoryInfo: ParentGroupCategoryInfo.Items != nil
+//
 // https://api.lightnovel.fun/api/category/get-article-cates
 func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCategoryInfo, error) {
 	req := GetArticleCategoriesRequest{
@@ -113,6 +121,8 @@ type GetArticleByCategoryResponse struct {
 	PageInfo PageInfo      `json:"page_info"`
 }
 
+// GetArticleByCategory retrieves articles under a specific category with pagination
+//
 // https://api.lightnovel.fun/api/category/get-article-by-cate
 func (c *Client) GetArticleByCategory(parentGroupId uint, groupId uint, pageSize uint, page uint) (*GetArticleByCategoryResponse, error) {
 	req := GetArticleByCategoryRequest{

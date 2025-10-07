@@ -53,6 +53,8 @@ type TetArticleDetailRequest struct {
 	NoContent bool `json:"simple"`
 }
 
+// GetArticleDetail retrieves detailed information about a specific article
+// 
 // https://api.lightnovel.fun/api/article/get-detail
 func (c *Client) GetArticleDetail(articleId uint, noContent bool) (*ArticleDetail, error) {
 	req := TetArticleDetailRequest{
