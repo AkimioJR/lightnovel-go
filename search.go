@@ -1,13 +1,13 @@
 package lightnovel
 
-type Alias struct {
-	ID    uint   `json:"id"`
+type Tag struct {
+	Id    uint   `json:"id"`
 	Alias string `json:"alias"`
 }
 
 // https://api.lightnovel.fun/api/search/get-search-tags
-func (c *Client) SearchTags() ([]Alias, error) {
-	resp, err := doRequest[[]Alias](c, "/api/search/get-search-tags", nil)
+func (c *Client) SearchTags() ([]Tag, error) {
+	resp, err := doRequest[[]Tag](c, "/api/search/get-search-tags", nil)
 	if err != nil {
 		return nil, err
 	}
