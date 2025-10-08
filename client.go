@@ -11,6 +11,8 @@ type Client struct {
 
 	credentials UserCredentials
 
+	c Cache
+
 	GZip        Bool
 	Encrypted   Bool
 	Client      ClientType
@@ -57,4 +59,8 @@ func (c *Client) SetUserCredentials(uid uint, securityKey string) {
 
 func (c *Client) SetHTTPClient(client *http.Client) {
 	c.httpClient = client
+}
+
+func (c *Client) SetCache(cache Cache) {
+	c.c = cache
 }

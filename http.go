@@ -80,6 +80,16 @@ func (r *Response[T]) UnmarshalJSON(data []byte) error {
 }
 
 func doRequest[T any](c *Client, data RequestData) (*Response[T], error) {
+	var r Response[T]
+
+	if c.c != nil && data.CacheKey() != "" {
+		if v, err := c.c.Get(data.CacheKey()); err != nil {
+			if json.Unmarshal(v, &r) != nil {
+				return &r, nil
+			}
+		}
+	}
+
 	reqData := c.newRequest(data)
 	reqBody, err := reqData.Json()
 	if err != nil {
@@ -92,10 +102,10 @@ func doRequest[T any](c *Client, data RequestData) (*Response[T], error) {
 		return nil, fmt.Errorf("create request failed: %w", err)
 	}
 
-	req.Header.Set("user-agent", c.ua)
-	req.Header.Set("content-type", "application/json")
+	req.Header.Set("User-Agent", c.ua)
+	req.Header.Set("Content-Type", "application/json")
 	if reqData.GZ {
-		req.Header.Set("accept-encoding", "gzip")
+		req.Header.Set("Accept-Encoding", "gzip")
 	}
 
 	resp, err := c.httpClient.Do(req)
@@ -119,7 +129,6 @@ func doRequest[T any](c *Client, data RequestData) (*Response[T], error) {
 	}
 
 	// fmt.Println(string(b))
-	var r Response[T]
 	err = json.Unmarshal(respBody, &r)
 	if err != nil {
 		return nil, fmt.Errorf("decode response failed: %w", err)
@@ -133,5 +142,8 @@ func doRequest[T any](c *Client, data RequestData) (*Response[T], error) {
 		return nil, fmt.Errorf("lightnovel api error: code %d", r.Code)
 	}
 
+	if c.c != nil && data.CacheKey() != "" {
+		c.c.Set(data.CacheKey(), respBody)
+	}
 	return &r, nil
 }
