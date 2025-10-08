@@ -1,5 +1,7 @@
 package lightnovel
 
+import "fmt"
+
 type RecommendItem struct {
 	GroupId    GroupID     `json:"gid"`
 	Type       uint        `json:"type"`
@@ -32,6 +34,14 @@ type RecommendRequest struct {
 	ClassID uint `json:"class"`
 }
 
+func (*RecommendRequest) Path() string {
+	return "/api/recom/get-recommends"
+}
+
+func (r *RecommendRequest) CacheKey() string {
+	return fmt.Sprintf("recom-get-recommends-%d", r.ClassID)
+}
+
 // GetRecommendList retrieves a list of recommended items
 //
 // https://api.lightnovel.us/api/recom/get-recommends
@@ -40,7 +50,7 @@ func (c *Client) GetRecommendList(classID uint) ([]RecommendItem, error) {
 	req.UserSecurityKey = c.credentials.UserSecurityKey
 	req.ClassID = classID
 
-	resp, err := doRequest[[]RecommendItem](c, "/api/recom/get-recommends", req)
+	resp, err := doRequest[[]RecommendItem](c, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +62,15 @@ type GetRecommendRankRequest struct {
 	ParentGroupId ParentGroupID `json:"parent_gid"`
 	GroupId       GroupID       `json:"gid"`
 }
+
+func (*GetRecommendRankRequest) Path() string {
+	return "/api/recom/get-ranks"
+}
+
+func (r *GetRecommendRankRequest) CacheKey() string {
+	return fmt.Sprintf("recom-get-ranks-%d-%d", r.ParentGroupId, r.GroupId)
+}
+
 type ArticleRankInfo struct {
 	Rank      uint     `json:"rank"`
 	ArticleId uint     `json:"aid"`
@@ -75,7 +94,7 @@ func (c *Client) GetRecommendRank(parentGropuId ParentGroupID, groupId GroupID) 
 		GroupId:         groupId,
 	}
 
-	resp, err := doRequest[[]ArticleRankInfo](c, "/api/recom/get-ranks", req)
+	resp, err := doRequest[[]ArticleRankInfo](c, &req)
 	if err != nil {
 		return nil, err
 	}

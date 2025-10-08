@@ -1,5 +1,7 @@
 package lightnovel
 
+import "fmt"
+
 type ArticleDetail struct {
 	ArticleId     uint             `json:"aid"`
 	UserId        uint             `json:"uid"`
@@ -53,6 +55,13 @@ type TetArticleDetailRequest struct {
 	NoContent bool `json:"simple"`
 }
 
+func (*TetArticleDetailRequest) Path() string {
+	return "/api/article/get-detail"
+}
+func (r *TetArticleDetailRequest) CacheKey() string {
+	return "article-get-detail" + fmt.Sprintf("-%d-%t", r.ArticleId, r.NoContent)
+}
+
 // GetArticleDetail retrieves detailed information about a specific article
 //
 // https://api.lightnovel.fun/api/article/get-detail
@@ -62,7 +71,7 @@ func (c *Client) GetArticleDetail(articleId uint, noContent bool) (*ArticleDetai
 		ArticleId:       articleId,
 		NoContent:       noContent,
 	}
-	resp, err := doRequest[ArticleDetail](c, "/api/article/get-detail", req)
+	resp, err := doRequest[ArticleDetail](c, &req)
 	if err != nil {
 		return nil, err
 	}

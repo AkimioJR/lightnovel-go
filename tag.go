@@ -1,8 +1,18 @@
 package lightnovel
 
+import "fmt"
+
 type GetArticleTagsRequest struct {
 	UserSecurityKey
 	ArticleId uint `json:"article_id"`
+}
+
+func (*GetArticleTagsRequest) Path() string {
+	return "/api/tag/get-article-tags"
+}
+
+func (r *GetArticleTagsRequest) CacheKey() string {
+	return fmt.Sprintf("tag-get-article-tags-%d", r.ArticleId)
 }
 
 type ArticleTag struct {
@@ -14,7 +24,7 @@ type ArticleTag struct {
 }
 
 // GetArticleTags retrieves tags associated with a specific article.
-// 
+//
 // https://api.lightnovel.fun/api/tag/get-article-tags
 func (c *Client) GetArticleTags(articleId uint) ([]ArticleTag, error) {
 	req := GetArticleTagsRequest{
@@ -22,7 +32,7 @@ func (c *Client) GetArticleTags(articleId uint) ([]ArticleTag, error) {
 		ArticleId:       articleId,
 	}
 
-	resp, err := doRequest[[]ArticleTag](c, "/api/tag/get-article-tags", req)
+	resp, err := doRequest[[]ArticleTag](c, &req)
 	if err != nil {
 		return nil, err
 	}

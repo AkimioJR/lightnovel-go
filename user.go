@@ -47,6 +47,16 @@ type UserCredentials struct {
 	UserSecurityKey
 }
 
+type GetUserInfoRequest UserCredentials
+
+func (*GetUserInfoRequest) Path() string {
+	return "/api/user/info"
+}
+
+func (r *GetUserInfoRequest) CacheKey() string {
+	return fmt.Sprintf("user-info-%d", r.UID)
+}
+
 type UserProfileBase struct {
 	UserUID
 	NickName   string        `json:"nickname"`
@@ -79,6 +89,13 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
+func (*LoginRequest) Path() string {
+	return "/api/user/login"
+}
+func (r *LoginRequest) CacheKey() string {
+	return ""
+}
+
 type UserLoginResponse struct {
 	UserProfileBase
 	UserSecurityKey
@@ -88,14 +105,11 @@ var ErrLoginFailed = fmt.Errorf("login failed")
 
 // https://api.lightnovel.fun/api/user/login
 func (c *Client) Login(username, password string) (*UserLoginResponse, error) {
-	resp, err := doRequest[UserLoginResponse](
-		c,
-		"/api/user/login",
-		LoginRequest{
-			Username: username,
-			Password: password,
-		},
-	)
+	req := LoginRequest{
+		Username: username,
+		Password: password,
+	}
+	resp, err := doRequest[UserLoginResponse](c, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +127,8 @@ var ErrNotSignedIn = fmt.Errorf("user not signed in")
 // # Need Login
 // https://api.lightnovel.fun/api/user/info
 func (c *Client) GetUserInfo() (*UserProfileDetail, error) {
-	resp, err := doRequest[UserProfileDetail](c, "/api/user/info", c.credentials)
+	req := GetUserInfoRequest(c.credentials)
+	resp, err := doRequest[UserProfileDetail](c, &req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get user info: %w", err)
 	}

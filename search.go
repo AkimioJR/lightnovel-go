@@ -1,15 +1,27 @@
 package lightnovel
 
+import "fmt"
+
 type Tag struct {
 	Id    uint   `json:"id"`
 	Alias string `json:"alias"`
+}
+
+type GetSearchTagsRequest struct{}
+
+func (*GetSearchTagsRequest) Path() string {
+	return "/api/search/get-search-tags"
+}
+
+func (r *GetSearchTagsRequest) CacheKey() string {
+	return "search-get-search-tags"
 }
 
 // Get host search tags
 //
 // https://api.lightnovel.fun/api/search/get-search-tags
 func (c *Client) SearchTags() ([]Tag, error) {
-	resp, err := doRequest[[]Tag](c, "/api/search/get-search-tags", nil)
+	resp, err := doRequest[[]Tag](c, &GetSearchTagsRequest{})
 	if err != nil {
 		return nil, err
 	}
@@ -21,6 +33,14 @@ type SearchRequest struct {
 	Query string      `json:"q"`
 	Type  ContentType `json:"type"`
 	Page  uint        `json:"page"`
+}
+
+func (*SearchRequest) Path() string {
+	return "/api/search/search-result"
+}
+
+func (r *SearchRequest) CacheKey() string {
+	return fmt.Sprintf("search-search-result-%s-%d-%d", r.Query, r.Type, r.Page)
 }
 
 type SearchUser struct {
@@ -117,7 +137,7 @@ func search[T any](c *Client, query string, page uint, t ContentType) (*T, error
 		Page:            page,
 	}
 
-	resp, err := doRequest[T](c, "/api/search/search-result", req)
+	resp, err := doRequest[T](c, &req)
 	if err != nil {
 		return nil, err
 	}

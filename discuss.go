@@ -1,10 +1,20 @@
 package lightnovel
 
+import "fmt"
+
 type GetDiscussTopicRequest struct {
 	UserSecurityKey
 	ArticleId uint `json:"aid"`
 	PageSize  uint `json:"page_size"`
 	Page      uint `json:"page"`
+}
+
+func (*GetDiscussTopicRequest) Path() string {
+	return "/api/discuss/get-topic"
+}
+
+func (r *GetDiscussTopicRequest) CacheKey() string {
+	return fmt.Sprintf("discuss-get-topic-%d-%d-%d", r.ArticleId, r.PageSize, r.Page)
 }
 
 type BaseComment struct {
@@ -48,7 +58,7 @@ func (c *Client) GetDiscussTopic(articleId uint, pageSize uint, page uint) (*Get
 		Page:            page,
 	}
 
-	resp, err := doRequest[GetDiscussTopicResponse](c, "/api/discuss/get-topic", req)
+	resp, err := doRequest[GetDiscussTopicResponse](c, &req)
 	if err != nil {
 		return nil, err
 	}

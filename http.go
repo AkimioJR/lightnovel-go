@@ -13,13 +13,13 @@ type Request struct {
 	Isencrypted Bool         `json:"is_encrypted"`
 	Client      ClientType   `json:"client"`
 	Platform    PlatformType `json:"platform"`
-	Data        any          `json:"d"`
+	Data        RequestData  `json:"d"`
 	VersionName string       `json:"ver_name"`
 	VersionCode uint         `json:"ver_code"`
 	Sign        string       `json:"sign"`
 }
 
-func (c *Client) newRequest(data any) *Request {
+func (c *Client) newRequest(data RequestData) *Request {
 	return &Request{
 		GZ:          c.GZip,
 		Isencrypted: c.Encrypted,
@@ -39,6 +39,11 @@ func (r *Request) Json() (*bytes.Reader, error) {
 		return nil, err
 	}
 	return bytes.NewReader(data), nil
+}
+
+type RequestData interface {
+	Path() string
+	CacheKey() string
 }
 
 type BaseResponse struct {
@@ -74,14 +79,14 @@ func (r *Response[T]) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func doRequest[T any](c *Client, path string, data any) (*Response[T], error) {
+func doRequest[T any](c *Client, data RequestData) (*Response[T], error) {
 	reqData := c.newRequest(data)
 	reqBody, err := reqData.Json()
 	if err != nil {
 		return nil, fmt.Errorf("create request body failed: %w", err)
 	}
 
-	url := c.api + path
+	url := c.api + data.Path()
 	req, err := http.NewRequest(http.MethodPost, url, reqBody)
 	if err != nil {
 		return nil, fmt.Errorf("create request failed: %w", err)

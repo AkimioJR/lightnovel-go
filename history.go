@@ -6,6 +6,14 @@ type AddHistoryRequest struct {
 	FId     uint `json:"fid"` // article id
 }
 
+func (*AddHistoryRequest) Path() string {
+	return "/api/history/add-history"
+}
+
+func (r *AddHistoryRequest) CacheKey() string {
+	return ""
+}
+
 // AddHistory adds a history record
 //
 // # Need Login
@@ -17,6 +25,6 @@ func (c *Client) AddHistory(classId uint, fId uint) error {
 		ClassId:         classId,
 		FId:             fId,
 	}
-	_, err := doRequest[struct{}](c, "/api/history/add-history", req)
+	_, err := doRequest[struct{}](c, &req)
 	return err
 }

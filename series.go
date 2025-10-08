@@ -1,8 +1,18 @@
 package lightnovel
 
+import "fmt"
+
 type GetSeriesInfoRequest struct {
 	UserSecurityKey
 	SeriesId uint `json:"sid"`
+}
+
+func (*GetSeriesInfoRequest) Path() string {
+	return "/api/series/get-info"
+}
+
+func (r *GetSeriesInfoRequest) CacheKey() string {
+	return fmt.Sprintf("series-get-info-%d", r.SeriesId)
 }
 
 type SeriesInfo struct {
@@ -56,7 +66,7 @@ func (c *Client) GetSeriesInfo(seriesId uint) (*SeriesInfo, error) {
 		SeriesId:        seriesId,
 	}
 
-	resp, err := doRequest[SeriesInfo](c, "/api/series/get-info", req)
+	resp, err := doRequest[SeriesInfo](c, &req)
 	if err != nil {
 		return nil, err
 	}

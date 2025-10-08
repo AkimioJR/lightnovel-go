@@ -1,8 +1,18 @@
 package lightnovel
 
+import "fmt"
+
 type GetCategoriesRequest struct {
 	UserSecurityKey
 	ParentGroupId ParentGroupID `json:"parent_gid"`
+}
+
+func (*GetCategoriesRequest) Path() string {
+	return "/api/category/get-categories"
+}
+
+func (r *GetCategoriesRequest) CacheKey() string {
+	return "category-get-categories" + fmt.Sprintf("-%d", r.ParentGroupId)
 }
 
 type CategoryInfo struct {
@@ -21,7 +31,7 @@ func (c *Client) GetCategories(parentGroupId ParentGroupID) ([]CategoryInfo, err
 		ParentGroupId:   parentGroupId,
 	}
 
-	resp, err := doRequest[[]CategoryInfo](c, "/api/category/get-categories", req)
+	resp, err := doRequest[[]CategoryInfo](c, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -32,6 +42,14 @@ type GetArticleCategoriesRequest struct {
 	UserSecurityKey
 	Cache bool `json:"cache"`
 	Depth uint `json:"depth"` // 2 -> GroupCategoryInfo
+}
+
+func (*GetArticleCategoriesRequest) Path() string {
+	return "/api/category/get-article-cates"
+}
+
+func (r *GetArticleCategoriesRequest) CacheKey() string {
+	return fmt.Sprintf("category-get-article-cates-%t-%d", r.Cache, r.Depth)
 }
 
 type ParentGroupCategoryInfo struct {
@@ -65,7 +83,7 @@ func (c *Client) GetArticleCategories(cache bool, depth uint) ([]ParentGroupCate
 		Depth:           depth,
 	}
 
-	resp, err := doRequest[[]ParentGroupCategoryInfo](c, "/api/category/get-article-cates", req)
+	resp, err := doRequest[[]ParentGroupCategoryInfo](c, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -78,6 +96,14 @@ type GetArticleByCategoryRequest struct {
 	GroupId       GroupID       `json:"gid"`
 	PageSize      uint          `json:"pageSize"`
 	Page          uint          `json:"page"`
+}
+
+func (*GetArticleByCategoryRequest) Path() string {
+	return "/api/category/get-article-by-cate"
+}
+
+func (r *GetArticleByCategoryRequest) CacheKey() string {
+	return fmt.Sprintf("category-get-article-by-cate-%d-%d-%d-%d", r.ParentGroupId, r.GroupId, r.PageSize, r.Page)
 }
 
 type ArticleInfo struct {
@@ -133,7 +159,7 @@ func (c *Client) GetArticleByCategory(parentGroupId ParentGroupID, groupId Group
 		Page:            page,
 	}
 
-	resp, err := doRequest[GetArticleByCategoryResponse](c, "/api/category/get-article-by-cate", req)
+	resp, err := doRequest[GetArticleByCategoryResponse](c, &req)
 	if err != nil {
 		return nil, err
 	}
