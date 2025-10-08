@@ -94,10 +94,11 @@ type SearchNew struct {
 }
 
 type SearchGeneralResponse struct {
-	Games       []any          `json:"games"`
-	Collections []SearchSeries `json:"collections"`
-	Users       []SearchUser   `json:"users"`
-	PageInfo    PageInfo       `json:"page_info"`
+	Games       []any           `json:"games"`
+	Articles    []SearchArticle `json:"articles"`
+	Collections []SearchSeries  `json:"collections"`
+	Users       []SearchUser    `json:"users"`
+	PageInfo    PageInfo        `json:"page_info"`
 }
 
 type SearchResponse[T any] struct {
