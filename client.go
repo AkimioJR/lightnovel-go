@@ -54,3 +54,7 @@ func (c *Client) SetUserCredentials(uid uint, securityKey string) {
 	c.credentials.UserUID.UID = uid
 	c.credentials.UserSecurityKey.SecurityKey = securityKey
 }
+
+func (c *Client) SetHTTPClient(client *http.Client) {
+	c.httpClient = client
+}
